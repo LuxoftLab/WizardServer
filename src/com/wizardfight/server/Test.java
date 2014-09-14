@@ -32,6 +32,10 @@ public class Test {
 		msg.target = msg.target == Target.SELF ? Target.ENEMY : Target.SELF;
 		msg.health = 100;
 		msg.mana = 10;
+		msg = new FightMessage(Target.ENEMY, FightAction.FIGHT_END);
+		//msg.target = msg.target == Target.SELF ? Target.ENEMY : Target.SELF;
+		msg.health = 100;
+		msg.mana = 10;
 		soket.getOutputStream().write(msg.getBytes());
 		soket.getOutputStream().close();
 		soket.close();

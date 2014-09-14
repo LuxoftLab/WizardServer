@@ -33,7 +33,7 @@ public class View extends JPanel {
 		buffs.put(Buff.WEAKNESS, new ImageIcon("img/buff_weakness.png"));
 	}
 	
-	JLabel playersLabel[], spells[], playersBuffs[][];
+	JLabel playersLabel[], spells[], spellNames[], playersBuffs[][];
 	JIndicator health[], mana[];
 
     public View() {
@@ -42,6 +42,7 @@ public class View extends JPanel {
         health = new JIndicator[2];
         mana = new JIndicator[2];
         spells = new JLabel[2];
+        spellNames=new JLabel[2];
         playersBuffs = new JLabel[2][4];
         JPanel jp=new JPanel();
         add(jp);
@@ -69,6 +70,11 @@ public class View extends JPanel {
             spells[i] = new JLabel(shapes.get(Shape.NONE));
             spells[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+            spellNames[i] = new JLabel("");
+            spellNames[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            spellNames[i].setForeground(Color.WHITE);
+            spellNames[i].setText("<html><font size='10'>Shape: </font></html>");
+            
             playersBuffs[i][Buff.HOLY_SHIELD.ordinal()] = new JLabel(buffs.get(Buff.HOLY_SHIELD));
             playersBuffs[i][Buff.WEAKNESS.ordinal()] = new JLabel(buffs.get(Buff.WEAKNESS));
             playersBuffs[i][Buff.CONCENTRATION.ordinal()] = new JLabel(buffs.get(Buff.CONCENTRATION));
@@ -89,6 +95,7 @@ public class View extends JPanel {
                                     .addContainerGap()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(playersLabel[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(spellNames[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(spells[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(buffsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(mana[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -105,6 +112,7 @@ public class View extends JPanel {
                                             .addComponent(buffsPanel, javax.swing.GroupLayout.PREFERRED_SIZE,75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(spells[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(spellNames[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(playersLabel[i], javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addContainerGap()
@@ -115,7 +123,7 @@ public class View extends JPanel {
 	
 	public void update(Player[] players) {
 		for(int i=0; i<2; i++) {
-			playersLabel[i].setText(players[i].isConnected() ? "Connected" : "Not connected");
+			playersLabel[i].setText(players[i].isConnected() ? players[i].getName() : "Not connected");
 			health[i].setValue(players[i].getHealth());
 			health[i].setString(players[i].getHealth()+"/"+WizardFight.PLAYER_HP);
 			mana[i].setValue(players[i].getMana());
@@ -125,6 +133,7 @@ public class View extends JPanel {
 			for(int j=0; j<4; j++) {
 				playersBuffs[i][j].setVisible(b.contains(Buff.values()[j]));
 			}
+			spellNames[i].setText("<html><font size='10'>Shape: "+players[i].getSpell().toString()+"</font></html>");
 		}
 		this.repaint();
 	}

@@ -5,16 +5,29 @@ import java.util.Set;
 
 import com.wizardfight.Buff;
 import com.wizardfight.FightMessage;
+import com.wizardfight.FightMessage.FightAction;
 import com.wizardfight.Shape;
 import com.wizardfight.WizardFight;
 
 public class Player {
+	private String name = "Player";
 	private boolean isConnected = false;
 	private int mana = WizardFight.PLAYER_MANA, health = WizardFight.PLAYER_HP;
 	private Shape lastSpell = Shape.NONE;
 	private HashSet<Buff> buffs = new HashSet<>();
 	
+	public void setName(String _name) {
+		name = _name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 	public void fromSelf(FightMessage msg) {
+		if(msg.health > health) {
+			msg.action = FightAction.HEAL;
+		}
 		mana = msg.mana;
 		health = msg.health;
 		if(msg.target == FightMessage.Target.SELF) {
@@ -27,12 +40,16 @@ public class Player {
 		case BUFF_ON:
 			buffs.add(Buff.values()[msg.param]);
 		case HEAL:
-			lastSpell = FightMessage.getShapeFromMessage(msg);
+			//lastSpell = FightMessage.getShapeFromMessage(msg);
+			break;
+		case FIGHT_END:
+			end();
+			break;
+		case FIGHT_START:
+			start();
 			break;
 		case DAMAGE:
 		case ENEMY_READY:
-		case FIGHT_END:
-		case FIGHT_START:
 		case BUFF_TICK:
 		case HIGH_DAMAGE:
 		case NEW_HP_OR_MANA:
@@ -40,6 +57,10 @@ public class Player {
 			break;
 		default:
 			break;
+		}
+		Shape t = FightMessage.getShapeFromMessage(msg);
+		if(t != Shape.NONE) {
+			lastSpell = t;
 		}
 	}
 	
@@ -52,11 +73,15 @@ public class Player {
 			buffs.add(Buff.values()[msg.param]);
 		case DAMAGE:
 		case HIGH_DAMAGE:
-			lastSpell = FightMessage.getShapeFromMessage(msg);
+			//lastSpell = FightMessage.getShapeFromMessage(msg);
+			break;
+		case FIGHT_END:
+			end();
+			break;
+		case FIGHT_START:
+			start();
 			break;
 		case ENEMY_READY:
-		case FIGHT_END:
-		case FIGHT_START:
 		case BUFF_TICK:
 		case NEW_HP_OR_MANA:
 		case HEAL:
@@ -90,5 +115,13 @@ public class Player {
 	
 	public void setConnectionStatus(boolean f) {
 		isConnected = f;
+	}
+	
+	public void end() {
+		Controller.endBattle(this);
+	}
+	
+	public void start() {
+		
 	}
 }

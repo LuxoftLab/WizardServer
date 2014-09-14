@@ -33,7 +33,6 @@ public class Test {
 		msg.health = 100;
 		msg.mana = 10;
 		soket.getOutputStream().write(msg.getBytes());
-		//Thread.currentThread().sleep(1000*30);
 		soket.getOutputStream().close();
 		soket.close();
 	}

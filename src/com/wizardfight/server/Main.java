@@ -15,6 +15,7 @@ public class Main {
 		Controller.setView(v);
 		frame.getContentPane().add(v);
 		frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}

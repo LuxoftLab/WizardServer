@@ -21,7 +21,7 @@ public class Controller {
 
 	private static View view;
 	
-	private static Player players[] = {new Player(), new Player()};
+	private static Player players[] = {new Player("Костя"), new Player("Витя")};
 	private static int nextAvailablePlayer = 0;
 	
 	private static HashMap<InetAddress, Player> map = new HashMap<>();
@@ -52,8 +52,8 @@ public class Controller {
 	}
 	
 	public static synchronized void onFightMessage(FightMessage msg, Socket socket) {
-		LOGGER.info("message from: "+socket.getInetAddress().getHostAddress());
-		LOGGER.info(msg.toString());
+		//LOGGER.info("message from: "+socket.getInetAddress().getHostAddress());
+		//LOGGER.info(msg.toString());
 		InetAddress addr = socket.getInetAddress();
 		Player player = map.get(addr);
 		player.fromSelf(msg);

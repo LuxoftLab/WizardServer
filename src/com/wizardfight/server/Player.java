@@ -16,6 +16,10 @@ public class Player {
 	private Shape lastSpell = Shape.NONE;
 	private HashSet<Buff> buffs = new HashSet<>();
 	
+	public Player(String _name) {
+		name = _name;
+	}
+	
 	public void setName(String _name) {
 		name = _name;
 	}
@@ -25,11 +29,17 @@ public class Player {
 	}
 	
 	public void fromSelf(FightMessage msg) {
-		if(msg.health > health) {
-			msg.action = FightAction.HEAL;
+		if(msg.health > health && msg.action != FightAction.BUFF_ON && msg.action != FightAction.BUFF_TICK) {
+			//msg.action = FightAction.HEAL;
 		}
 		mana = msg.mana;
 		health = msg.health;
+		
+		Shape t = FightMessage.getShapeFromMessage(msg);
+		if(t != Shape.NONE && FightMessage.isSpellCreatedByEnemy(msg)) {
+			System.out.println(name+": "+t.toString());
+			lastSpell = t;
+		}
 		if(msg.target == FightMessage.Target.SELF) {
 			return;
 		}
@@ -58,10 +68,7 @@ public class Player {
 		default:
 			break;
 		}
-		Shape t = FightMessage.getShapeFromMessage(msg);
-		if(t != Shape.NONE) {
-			lastSpell = t;
-		}
+
 	}
 	
 	public void fromEnemy(FightMessage msg) {

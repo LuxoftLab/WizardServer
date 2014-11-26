@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.Socket;
 
 import com.wizardfight.FightMessage;
-import com.wizardfight.WizardFight;
 
 public class ClientListener extends Thread {
 	Socket socket;

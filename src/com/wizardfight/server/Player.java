@@ -1,56 +1,57 @@
 package com.wizardfight.server;
 
 import java.util.HashSet;
-import java.util.Set;
-
 import com.wizardfight.Buff;
 import com.wizardfight.FightMessage;
-import com.wizardfight.FightMessage.FightAction;
 import com.wizardfight.Shape;
-import com.wizardfight.WizardFight;
+import com.wizardfight.FightActivity;
+import com.wizardfight.FightMessage.FightAction;
+import com.wizardfight.FightMessage.Target;
 
 public class Player {
 	private String name = "Player";
 	private boolean isConnected = false;
-	private int mana = WizardFight.PLAYER_MANA, health = WizardFight.PLAYER_HP;
+	private int mana = FightActivity.PLAYER_MANA,
+			health = FightActivity.PLAYER_HP;
 	private Shape lastSpell = Shape.NONE;
 	private HashSet<Buff> buffs = new HashSet<>();
-	
+
 	public Player(String _name) {
 		name = _name;
 	}
-	
+
 	public void setName(String _name) {
 		name = _name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void fromSelf(FightMessage msg) {
-		if(msg.health > health && msg.action != FightAction.BUFF_ON && msg.action != FightAction.BUFF_TICK) {
-			//msg.action = FightAction.HEAL;
+		if (msg.mHealth > health && msg.mAction != FightAction.BUFF_ON
+				&& msg.mAction != FightAction.BUFF_TICK) {
+			// msg.action = FightAction.HEAL;
 		}
-		mana = msg.mana;
-		health = msg.health;
-		
+		mana = msg.mMana;
+		health = msg.mHealth;
+
 		Shape t = FightMessage.getShapeFromMessage(msg);
-		if(t != Shape.NONE && FightMessage.isSpellCreatedByEnemy(msg)) {
-			System.out.println(name+": "+t.toString());
+		if (t != Shape.NONE && FightMessage.isSpellCreatedByEnemy(msg)) {
+			System.out.println(name + ": " + t.toString());
 			lastSpell = t;
 		}
-		if(msg.target == FightMessage.Target.SELF) {
+		if (msg.mTarget == Target.SELF) {
 			return;
 		}
-		switch(msg.action) {
+		switch (msg.mAction) {
 		case BUFF_OFF:
-			buffs.remove(Buff.values()[msg.param]);
+			buffs.remove(Buff.values()[msg.mParam]);
 			break;
 		case BUFF_ON:
-			buffs.add(Buff.values()[msg.param]);
+			buffs.add(Buff.values()[msg.mParam]);
 		case HEAL:
-			//lastSpell = FightMessage.getShapeFromMessage(msg);
+			// lastSpell = FightMessage.getShapeFromMessage(msg);
 			break;
 		case FIGHT_END:
 			end();
@@ -70,17 +71,17 @@ public class Player {
 		}
 
 	}
-	
+
 	public void fromEnemy(FightMessage msg) {
-		if(msg.target == FightMessage.Target.ENEMY) {
+		if (msg.mTarget == Target.ENEMY) {
 			return;
 		}
-		switch(msg.action) {
+		switch (msg.mAction) {
 		case BUFF_ON:
-			buffs.add(Buff.values()[msg.param]);
+			buffs.add(Buff.values()[msg.mParam]);
 		case DAMAGE:
 		case HIGH_DAMAGE:
-			//lastSpell = FightMessage.getShapeFromMessage(msg);
+			// lastSpell = FightMessage.getShapeFromMessage(msg);
 			break;
 		case FIGHT_END:
 			end();
@@ -99,36 +100,36 @@ public class Player {
 			break;
 		}
 	}
-	
+
 	public boolean isConnected() {
 		return isConnected;
 	}
-	
+
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public int getMana() {
 		return mana;
 	}
-	
+
 	public Shape getSpell() {
 		return lastSpell;
 	}
-	
+
 	public HashSet<Buff> getBuffs() {
 		return buffs;
 	}
-	
+
 	public void setConnectionStatus(boolean f) {
 		isConnected = f;
 	}
-	
+
 	public void end() {
 		Controller.endBattle(this);
 	}
-	
+
 	public void start() {
-		
+
 	}
 }

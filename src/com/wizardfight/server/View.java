@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import com.wizardfight.Buff;
 import com.wizardfight.Shape;
-import com.wizardfight.WizardFight;
+import com.wizardfight.FightActivity;
 
 public class View extends JPanel {
 	
@@ -59,14 +59,14 @@ public class View extends JPanel {
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanels[i]);
             jPanels[i].setLayout(jPanel1Layout);
 
-            health[i] = new JIndicator(0, WizardFight.PLAYER_HP, i>0);
-            health[i].setValue(WizardFight.PLAYER_HP);
+            health[i] = new JIndicator(0, FightActivity.PLAYER_HP, i>0);
+            health[i].setValue(FightActivity.PLAYER_HP);
             health[i].backColor=Color.RED;
             health[i].setOpaque(false);
-            mana[i] = new JIndicator(0, WizardFight.PLAYER_MANA, i>0);
+            mana[i] = new JIndicator(0, FightActivity.PLAYER_MANA, i>0);
             mana[i].setMainColor(Color.BLUE);
             mana[i].setOpaque(false);
-            mana[i].setValue(WizardFight.PLAYER_MANA);
+            mana[i].setValue(FightActivity.PLAYER_MANA);
             spells[i] = new JLabel(shapes.get(Shape.NONE));
             spells[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -125,9 +125,9 @@ public class View extends JPanel {
 		for(int i=0; i<2; i++) {
 			playersLabel[i].setText(players[i].isConnected() ? players[i].getName() : "Not connected");
 			health[i].setValue(players[i].getHealth());
-			health[i].setString(players[i].getHealth()+"/"+WizardFight.PLAYER_HP);
+			health[i].setString(players[i].getHealth()+"/"+FightActivity.PLAYER_HP);
 			mana[i].setValue(players[i].getMana());
-			mana[i].setString(players[i].getMana()+"/"+WizardFight.PLAYER_MANA);
+			mana[i].setString(players[i].getMana()+"/"+FightActivity.PLAYER_MANA);
 			spells[i].setIcon(shapes.get(players[i].getSpell()));
 			HashSet<Buff> b = players[i].getBuffs();
 			for(int j=0; j<4; j++) {

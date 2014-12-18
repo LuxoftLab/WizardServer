@@ -21,10 +21,14 @@ public class Controller {
 
 	private static View view;
 	
-	private static Player players[] = {new Player("Костя"), new Player("Витя")};
+	private static Player players[] = {new Player("Player 1"), new Player("Player 2")};
 	private static int nextAvailablePlayer = 0;
 	
 	private static HashMap<InetAddress, Player> map = new HashMap<>();
+	
+	private static boolean isBotGame;
+	private static Player userPlayer = players[0];
+	private static Player botPlayer = players[1];
 	
 	public static synchronized void bindSocket(Socket socket) {
 		LOGGER.info("connection from: "+socket.getInetAddress().getHostAddress());
@@ -36,6 +40,9 @@ public class Controller {
 			}
 			map.put(addr, players[nextAvailablePlayer]);
 			player = players[nextAvailablePlayer++];
+			if(nextAvailablePlayer == 2) {
+				isBotGame = false;
+			}
 		}
 		player.setConnectionStatus(true);
 		view.update(players);
@@ -55,7 +62,20 @@ public class Controller {
 		//LOGGER.info("message from: "+socket.getInetAddress().getHostAddress());
 		//LOGGER.info(msg.toString());
 		InetAddress addr = socket.getInetAddress();
-		Player player = map.get(addr);
+		if(!isBotGame && msg.mIsBotMessage) {
+			isBotGame = true;
+			botPlayer.setName("Bot");
+			botPlayer.setConnectionStatus(true);
+		}
+		
+		Player player;
+		
+		if(isBotGame) {
+			player = (msg.mIsBotMessage)? botPlayer : userPlayer;
+		} else {
+			player = map.get(addr);
+		}
+		
 		player.fromSelf(msg);
 		getSecondPlayer(player).fromEnemy(msg);
 		view.update(players);

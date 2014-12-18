@@ -16,7 +16,7 @@ public class ClientListener extends Thread {
 	@Override 
 	public void run() {
 		Controller.bindSocket(socket);
-		byte buffer[] = new byte[8];
+		byte buffer[] = new byte[ FightMessage.SIZE ];
 		try {
 			InputStream in = socket.getInputStream();
 			while(in.read(buffer) != -1) {

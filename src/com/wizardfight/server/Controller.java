@@ -81,6 +81,10 @@ public class Controller {
 		view.update(players);
 	}
 	
+	public static synchronized void onDeviceName(String name, Socket socket) {
+		// TODO change player name here
+	}
+			
 	public static Player getSecondPlayer(Player first) {
 		return players[0] == first ? players[1] : players[0];
 	}

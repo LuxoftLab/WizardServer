@@ -39,12 +39,7 @@ public class ClientListener extends Thread {
 				} else if (message instanceof WifiMessage) {
 					WifiMessage msg = (WifiMessage)message;
 					if(msg == WifiMessage.LEAVE_FIGHT) {
-						/*
-						 *  TODO CLEAR GUI WHEN LEAVING
-						 *  create controller method onLeaveFight
-						 *  and do it there
-						 */
-						System.out.println("LEAVE FIGHT");
+						Controller.onLeaveFight();
 					}
 				}
 			}

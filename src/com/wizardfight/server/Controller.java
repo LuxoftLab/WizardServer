@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -14,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.wizardfight.Buff;
+import com.wizardfight.FightActivity;
 import com.wizardfight.FightMessage;
 
 public class Controller {
@@ -29,6 +32,8 @@ public class Controller {
 	private static boolean isBotGame;
 	private static Player userPlayer = players[0];
 	private static Player botPlayer = players[1];
+	
+	private static JFrame frame;
 	
 	public static synchronized void bindSocket(Socket socket) {
 		LOGGER.info("connection from: "+socket.getInetAddress().getHostAddress());
@@ -95,7 +100,7 @@ public class Controller {
 	
 	public static void endBattle(Player p) {
 		p = players[0] == p ? players[1] : players[0];
-		JFrame frame = new JFrame("End");
+		frame = new JFrame("End");
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.black);
 		JLabel l = new JLabel("<html><font color='White' size='10'>"+p.getName()+" win!</font></html>");
@@ -107,5 +112,15 @@ public class Controller {
 		frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
 		
 		frame.setVisible(true);
+	}
+	
+	
+	public static void onLeaveFight() {
+		if(frame != null)
+			frame.dispose();
+		for(int i=0; i<2; i++) {
+			players[i].refresh();
+		}
+		view.update(players);
 	}
 }

@@ -129,8 +129,17 @@ public class Player {
 	public void end() {
 		Controller.endBattle(this);
 	}
+	
+	public void refresh()
+	{
+		this.buffs = new HashSet<>();
+		this.mana = FightActivity.PLAYER_MANA;
+		this.health = FightActivity.PLAYER_HP;
+		this.lastSpell = Shape.NONE;
+	}
 
 	public void start() {
-
+		Controller.onLeaveFight();
+	//	this.refresh();
 	}
 }

@@ -13,6 +13,7 @@ import com.wizardfight.Buff;
 import com.wizardfight.Shape;
 import com.wizardfight.FightActivity;
 
+
 public class View extends JPanel {
 	
 	private static HashMap<Shape, ImageIcon> shapes = new HashMap<>();
@@ -47,7 +48,6 @@ public class View extends JPanel {
         JPanel jp=new JPanel();
         add(jp);
         setBackground(Color.BLACK);
-
         jp.setLayout(new java.awt.GridLayout());
         JPanel jPanels[]=new JPanel[2];
         for(int i=0;i<2;i++) {
@@ -137,5 +137,7 @@ public class View extends JPanel {
 		}
 		this.repaint();
 	}
+	
+
 
 }

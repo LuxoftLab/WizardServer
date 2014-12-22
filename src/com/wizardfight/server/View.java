@@ -80,7 +80,7 @@ public class View extends JPanel {
             playersBuffs[i][Buff.CONCENTRATION.ordinal()] = new JLabel(buffs.get(Buff.CONCENTRATION));
             playersBuffs[i][Buff.BLESSING.ordinal()] = new JLabel(buffs.get(Buff.BLESSING));
 
-            JPanel buffsPanel = new JPanel();
+            JPanel buffsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             for(int j=0; j<4; j++) {
                 playersBuffs[i][j].setVisible(false);
                 buffsPanel.add(playersBuffs[i][j]);
@@ -137,7 +137,5 @@ public class View extends JPanel {
 		}
 		this.repaint();
 	}
-	
-
 
 }

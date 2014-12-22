@@ -87,7 +87,10 @@ public class Controller {
 	}
 	
 	public static synchronized void onDeviceName(String name, Socket socket) {
-		// TODO change player name here
+		InetAddress addr = socket.getInetAddress();
+		Player player = map.get(addr);
+		player.setName(name);
+		view.update(players);
 	}
 			
 	public static Player getSecondPlayer(Player first) {

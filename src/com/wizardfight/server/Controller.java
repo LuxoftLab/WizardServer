@@ -81,8 +81,10 @@ public class Controller {
 			player = map.get(addr);
 		}
 		
-		player.fromSelf(msg);
+		boolean newBuff = player.fromSelf(msg);
 		getSecondPlayer(player).fromEnemy(msg);
+		
+		if(newBuff) view.showCast(player);
 		view.update(players);
 	}
 	
@@ -93,6 +95,10 @@ public class Controller {
 		view.update(players);
 	}
 			
+	public static int getPlayerIndex(Player p) { 
+		return (p == players[0])? 0 : 1;
+	}
+	
 	public static Player getSecondPlayer(Player first) {
 		return players[0] == first ? players[1] : players[0];
 	}

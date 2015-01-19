@@ -28,11 +28,9 @@ public class Player {
 		return name;
 	}
 
-	public void fromSelf(FightMessage msg) {
-		if (msg.mHealth > health && msg.mAction != FightAction.BUFF_ON
-				&& msg.mAction != FightAction.BUFF_TICK) {
-			// msg.action = FightAction.HEAL;
-		}
+	public boolean fromSelf(FightMessage msg) {
+		boolean newSpell = false;
+		
 		mana = msg.mMana;
 		health = msg.mHealth;
 
@@ -41,10 +39,15 @@ public class Player {
 			System.out.println(name + ": " + t.toString());
 			WSound.playShapeSound(t);
 			lastSpell = t;
+			newSpell = true;
+		} else {
+			newSpell = false;
 		}
+		
 		if (msg.mTarget == Target.SELF) {
-			return;
+			return newSpell;
 		}
+		
 		switch (msg.mAction) {
 		case BUFF_OFF:
 			buffs.remove(Buff.values()[msg.mParam]);
@@ -52,7 +55,6 @@ public class Player {
 		case BUFF_ON:
 			buffs.add(Buff.values()[msg.mParam]);
 		case HEAL:
-			// lastSpell = FightMessage.getShapeFromMessage(msg);
 			break;
 		case FIGHT_END:
 			end();
@@ -70,7 +72,8 @@ public class Player {
 		default:
 			break;
 		}
-
+		
+		return newSpell;
 	}
 
 	public void fromEnemy(FightMessage msg) {

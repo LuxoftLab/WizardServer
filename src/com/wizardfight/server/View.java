@@ -34,15 +34,15 @@ public class View extends JPanel {
 		buffs.put(Buff.WEAKNESS, new ImageIcon("img/buff_weakness.png"));
 	}
 	
-	JLabel playersLabel[], spells[], spellNames[], playersBuffs[][];
+	JLabel playersLabel[], spellNames[], playersBuffs[][];
 	JIndicator health[], mana[];
-
+	SpellPicture spells[];
     public View() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         playersLabel = new JLabel[2];
         health = new JIndicator[2];
         mana = new JIndicator[2];
-        spells = new JLabel[2];
+        spells = new SpellPicture[2];
         spellNames=new JLabel[2];
         playersBuffs = new JLabel[2][4];
         JPanel jp=new JPanel();
@@ -67,7 +67,7 @@ public class View extends JPanel {
             mana[i].setMainColor(Color.BLUE);
             mana[i].setOpaque(false);
             mana[i].setValue(FightActivity.PLAYER_MANA);
-            spells[i] = new JLabel(shapes.get(Shape.NONE));
+            spells[i] = new SpellPicture();
             spells[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
             spellNames[i] = new JLabel("");
@@ -121,6 +121,14 @@ public class View extends JPanel {
         }
     }
 	
+    public void showCast(Player p) {
+    	int i = Controller.getPlayerIndex(p);
+    	Shape s = p.getSpell();
+    	if(s == Shape.NONE) return;
+    	
+    	spells[i].setSpell(shapes.get(s));
+    }
+    
 	public void update(Player[] players) {
 		for(int i=0; i<2; i++) {
 			playersLabel[i].setText(players[i].isConnected() ? players[i].getName() : "Not connected");
@@ -128,7 +136,6 @@ public class View extends JPanel {
 			health[i].setString(players[i].getHealth()+"/"+FightActivity.PLAYER_HP);
 			mana[i].setValue(players[i].getMana());
 			mana[i].setString(players[i].getMana()+"/"+FightActivity.PLAYER_MANA);
-			spells[i].setIcon(shapes.get(players[i].getSpell()));
 			HashSet<Buff> b = players[i].getBuffs();
 			for(int j=0; j<4; j++) {
 				playersBuffs[i][j].setVisible(b.contains(Buff.values()[j]));

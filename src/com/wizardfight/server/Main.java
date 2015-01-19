@@ -23,10 +23,31 @@ public class Main {
 		frame.pack();
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(800,600);
 		frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
 		
+		//show ip 
+		boolean flag = false;
+		Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+        while(e.hasMoreElements()) {
+        	if(flag)
+        		break;
+            NetworkInterface n = (NetworkInterface) e.nextElement();
+            Enumeration<InetAddress> ee = n.getInetAddresses();
+           
+            while (ee.hasMoreElements()) {
+                InetAddress i = (InetAddress) ee.nextElement();
+                if(i.isSiteLocalAddress()) {
+                frame.setTitle(
+                		InetAddress.getLocalHost().getCanonicalHostName() 
+                		+ " - " + i.getHostAddress());
+                	flag = true;
+                	break;
+                }
+            }
+        }
+        
+		frame.setVisible(true);
 	}
 }

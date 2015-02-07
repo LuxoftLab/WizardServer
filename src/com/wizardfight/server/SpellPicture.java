@@ -35,7 +35,6 @@ public class SpellPicture extends JLabel {
 		timer = new Timer(40, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("action performed!");
 				if (startTime < 0) {
 					startTime = System.currentTimeMillis();
 				} else {

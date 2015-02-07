@@ -84,7 +84,10 @@ public class Controller {
 		boolean newBuff = player.fromSelf(msg);
 		getSecondPlayer(player).fromEnemy(msg);
 		
-		if(newBuff) view.showCast(player);
+		if(newBuff) {
+			WSound.playShapeSound(player.getSpell());
+			view.showCast(player);
+		}
 		view.update(players);
 	}
 	

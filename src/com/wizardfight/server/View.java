@@ -27,6 +27,7 @@ public class View extends JPanel {
 		shapes.put(Shape.SHIELD, new ImageIcon("img/"+Shape.SHIELD+".png"));
 		shapes.put(Shape.V, new ImageIcon("img/"+Shape.V+".png"));
 		shapes.put(Shape.Z, new ImageIcon("img/"+Shape.Z+".png"));
+		shapes.put(Shape.FAIL, new ImageIcon("img/"+Shape.FAIL+".png"));
 		
 		buffs.put(Buff.BLESSING, new ImageIcon("img/buff_blessing.png"));
 		buffs.put(Buff.HOLY_SHIELD, new ImageIcon("img/buff_shield.png"));

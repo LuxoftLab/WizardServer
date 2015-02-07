@@ -37,10 +37,10 @@ public class Player {
 		Shape t = FightMessage.getShapeFromMessage(msg);
 		if (t != Shape.NONE && FightMessage.isSpellCreatedByEnemy(msg)) {
 			System.out.println(name + ": " + t.toString());
-			WSound.playShapeSound(t);
 			lastSpell = t;
 			newSpell = true;
 		} else {
+			System.out.println(t + ", by enemy: " + FightMessage.isSpellCreatedByEnemy(msg));
 			newSpell = false;
 		}
 		

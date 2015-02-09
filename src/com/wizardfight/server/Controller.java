@@ -24,7 +24,7 @@ public class Controller {
 
 	private static View view;
 	
-	private static Player players[] = {new Player("Player 1"), new Player("Player 2")};
+	private static Player players[] = {new Player(""), new Player("")};
 	private static int nextAvailablePlayer = 0;
 	
 	private static HashMap<InetAddress, Player> map = new HashMap<>();
@@ -69,7 +69,7 @@ public class Controller {
 		InetAddress addr = socket.getInetAddress();
 		if(!isBotGame && msg.mIsBotMessage) {
 			isBotGame = true;
-			botPlayer.setName("Bot");
+			botPlayer.setName(Main.label("Bot"));
 			botPlayer.setConnectionStatus(true);
 		}
 		
@@ -112,10 +112,11 @@ public class Controller {
 	
 	public static void endBattle(Player p) {
 		p = players[0] == p ? players[1] : players[0];
-		frame = new JFrame("End");
+		frame = new JFrame(Main.label("Fight_end"));
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.black);
-		JLabel l = new JLabel("<html><font color='White' size='10'>"+p.getName()+" win!</font></html>");
+		String endMessage = Main.label("Winner") + ": " + p.getName();
+		JLabel l = new JLabel("<html><font color='White' size='10'>" + endMessage + "</font></html>");
 		l.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
 		panel.add(l);
 		frame.getContentPane().add(panel);

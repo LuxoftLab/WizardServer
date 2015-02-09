@@ -3,6 +3,7 @@ package com.wizardfight.server;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -18,6 +19,7 @@ public class View extends JPanel {
 	
 	private static HashMap<Shape, ImageIcon> shapes = new HashMap<>();
 	private static HashMap<Buff, ImageIcon> buffs = new HashMap<>();
+	private static final int BUFFS_SIZE;
 	static {
 		shapes.put(Shape.NONE, new ImageIcon("img/nothing.png"));
 		shapes.put(Shape.CIRCLE, new ImageIcon("img/"+Shape.CIRCLE+".png"));
@@ -33,6 +35,7 @@ public class View extends JPanel {
 		buffs.put(Buff.HOLY_SHIELD, new ImageIcon("img/buff_shield.png"));
 		buffs.put(Buff.CONCENTRATION, new ImageIcon("img/buff_concentration.png"));
 		buffs.put(Buff.WEAKNESS, new ImageIcon("img/buff_weakness.png"));
+		BUFFS_SIZE = buffs.size();
 	}
 	
 	JLabel playersLabel[], spellNames[], playersBuffs[][];
@@ -45,7 +48,7 @@ public class View extends JPanel {
         mana = new JIndicator[2];
         spells = new SpellPicture[2];
         spellNames=new JLabel[2];
-        playersBuffs = new JLabel[2][4];
+        playersBuffs = new JLabel[2][BUFFS_SIZE];
         JPanel jp=new JPanel();
         add(jp);
         setBackground(Color.BLACK);
@@ -74,20 +77,19 @@ public class View extends JPanel {
             spellNames[i] = new JLabel("");
             spellNames[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             spellNames[i].setForeground(Color.WHITE);
-            spellNames[i].setText("<html><font size='10'>Shape: </font></html>");
+            spellNames[i].setText("");
             
-            playersBuffs[i][Buff.HOLY_SHIELD.ordinal()] = new JLabel(buffs.get(Buff.HOLY_SHIELD));
-            playersBuffs[i][Buff.WEAKNESS.ordinal()] = new JLabel(buffs.get(Buff.WEAKNESS));
-            playersBuffs[i][Buff.CONCENTRATION.ordinal()] = new JLabel(buffs.get(Buff.CONCENTRATION));
-            playersBuffs[i][Buff.BLESSING.ordinal()] = new JLabel(buffs.get(Buff.BLESSING));
+            for (Map.Entry<Buff, ImageIcon> entry : buffs.entrySet()) {
+                playersBuffs[i][ entry.getKey().ordinal() ] = new JLabel( entry.getValue() );
+            }
 
             JPanel buffsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            for(int j=0; j<4; j++) {
+            for(int j=0; j<BUFFS_SIZE; j++) {
                 playersBuffs[i][j].setVisible(false);
                 buffsPanel.add(playersBuffs[i][j]);
             }
             buffsPanel.setOpaque(false);
-            playersLabel[i] = new JLabel("Not connected");
+            playersLabel[i] = new JLabel(Main.label("Not_connected"));
             playersLabel[i].setForeground(Color.WHITE);
             playersLabel[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jPanel1Layout.setHorizontalGroup(
@@ -132,16 +134,20 @@ public class View extends JPanel {
     
 	public void update(Player[] players) {
 		for(int i=0; i<2; i++) {
-			playersLabel[i].setText(players[i].isConnected() ? players[i].getName() : "Not connected");
+			String pLabel = players[i].isConnected() ? players[i].getName()
+                    : Main.label("Not_connected");
+            playersLabel[i].setText(pLabel);
 			health[i].setValue(players[i].getHealth());
 			health[i].setString(players[i].getHealth()+"/"+FightActivity.PLAYER_HP);
 			mana[i].setValue(players[i].getMana());
 			mana[i].setString(players[i].getMana()+"/"+FightActivity.PLAYER_MANA);
 			HashSet<Buff> b = players[i].getBuffs();
-			for(int j=0; j<4; j++) {
+			for(int j=0; j<BUFFS_SIZE; j++) {
 				playersBuffs[i][j].setVisible(b.contains(Buff.values()[j]));
 			}
-			spellNames[i].setText("<html><font size='10'>Shape: "+players[i].getSpell().toString()+"</font></html>");
+			String shapeLabel = Main.label("Shape") + ": "
+                    + Main.label(players[i].getSpell() + "");
+            spellNames[i].setText("<html><font size='10'>" + shapeLabel + "</font></html>");
 		}
 		this.repaint();
 	}

@@ -9,7 +9,7 @@ import com.wizardfight.FightMessage.FightAction;
 import com.wizardfight.FightMessage.Target;
 
 public class Player {
-	private String name = "Player";
+	private String name = "";
 	private boolean isConnected = false;
 	private int mana = FightActivity.PLAYER_MANA,
 			health = FightActivity.PLAYER_HP;

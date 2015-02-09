@@ -9,10 +9,24 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.InetAddress;
 import java.util.Enumeration;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
 
 public class Main {
+	private static ResourceBundle labels;
+
+    static {
+        labels = ResourceBundle
+                .getBundle("LabelsBundle", Locale.getDefault());
+    }
+
+    public static String label(String key) {
+        System.out.println("label(" + key + "): " + labels.getString(key));
+        return labels.getString(key);
+    }
+    
 	public static void main(String args[]) throws IOException {
 		new ConnectionListener().start();
 		JFrame frame = new JFrame();

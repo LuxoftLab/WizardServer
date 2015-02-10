@@ -90,6 +90,7 @@ public class View extends JPanel {
             }
             buffsPanel.setOpaque(false);
             playersLabel[i] = new JLabel(Main.label("Not_connected"));
+            playersLabel[i].setFont(new Font("Arial", Font.BOLD, 24));
             playersLabel[i].setForeground(Color.WHITE);
             playersLabel[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jPanel1Layout.setHorizontalGroup(
@@ -136,7 +137,9 @@ public class View extends JPanel {
 		for(int i=0; i<2; i++) {
 			String pLabel = players[i].isConnected() ? players[i].getName()
                     : Main.label("Not_connected");
+			
             playersLabel[i].setText(pLabel);
+            playersLabel[i].setFont(new Font("Arial", Font.BOLD, 24));
 			health[i].setValue(players[i].getHealth());
 			health[i].setString(players[i].getHealth()+"/"+FightActivity.PLAYER_HP);
 			mana[i].setValue(players[i].getMana());
@@ -145,8 +148,8 @@ public class View extends JPanel {
 			for(int j=0; j<BUFFS_SIZE; j++) {
 				playersBuffs[i][j].setVisible(b.contains(Buff.values()[j]));
 			}
-			String shapeLabel = Main.label("Shape") + ": "
-                    + Main.label(players[i].getSpell() + "");
+			String shapeLabel =  Main.spellLabel(players[i].getSpell());
+			
             spellNames[i].setText("<html><font size='10'>" + shapeLabel + "</font></html>");
 		}
 		this.repaint();

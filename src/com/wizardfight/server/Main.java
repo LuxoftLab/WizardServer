@@ -9,14 +9,32 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.InetAddress;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
 
+import com.wizardfight.Shape;
+
 public class Main {
 	private static ResourceBundle labels;
 
+	static HashMap <Shape, String> ShapesSpells = new HashMap <Shape, String>();
+
+	static {
+		ShapesSpells.put(Shape.TRIANGLE, "Cone_of_cold");
+		ShapesSpells.put(Shape.CIRCLE, "Circle_of_fire");
+		ShapesSpells.put(Shape.CLOCK, "Healing");
+		ShapesSpells.put(Shape.PI, "Blessing");
+		ShapesSpells.put(Shape.V, "Concentration");
+		ShapesSpells.put(Shape.SHIELD, "Holy_Shield");
+		ShapesSpells.put(Shape.Z, "Weakness");
+		ShapesSpells.put(Shape.FAIL, "fail");
+		ShapesSpells.put(Shape.NONE, "none");
+		
+	}
+	
     static {
         labels = ResourceBundle
                 .getBundle("LabelsBundle", Locale.getDefault());
@@ -25,6 +43,11 @@ public class Main {
     public static String label(String key) {
         System.out.println("label(" + key + "): " + labels.getString(key));
         return labels.getString(key);
+    }
+    
+    public static String spellLabel(Shape shape) {
+    	        
+    	return labels.getString(ShapesSpells.get(shape));
     }
     
 	public static void main(String args[]) throws IOException {
@@ -61,7 +84,7 @@ public class Main {
                 }
             }
         }
-        
+        frame.setMinimumSize(new Dimension(800, 700));
 		frame.setVisible(true);
 	}
 }

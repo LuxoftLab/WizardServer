@@ -1,16 +1,20 @@
 package com.wizardfight.server;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 
 public class JIndicator extends  JProgressBar implements ActionListener {
     boolean right=true;
     Color background=Color.black;
     Color mainColor=Color.green;
     Color backColor;
-    int fontSize=12;
+    int fontSize =24; 
     int margin=0;
     double lvalue=0;
     double AnimStep=0;
@@ -51,6 +55,19 @@ public class JIndicator extends  JProgressBar implements ActionListener {
         }
     }
 
+    int ShiftNorth(int p, int distance) {
+    	   return (p - distance);
+    	   }
+    	int ShiftSouth(int p, int distance) {
+    	   return (p + distance);
+    	   }
+    	int ShiftEast(int p, int distance) {
+    	   return (p + distance);
+    	   }
+    	int ShiftWest(int p, int distance) {
+    	   return (p - distance);
+    	   }
+    	
     @Override
     public void paint(Graphics g) {
             String str = getValue() + "/" + getMaximum();
@@ -84,10 +101,19 @@ public class JIndicator extends  JProgressBar implements ActionListener {
                 g2d.setColor(mainColor);
                 g2d.fillRect(margin + t1 + v, margin, getWidth() - t - v - margin * 2, getHeight() - margin * 2);
             }
-            g2d.setFont(new Font(getFont().getFontName(), Font.PLAIN, fontSize));
-            g2d.setColor(Color.white);
-            g2d.drawString(str, (getWidth()- t +t1*2 - (g2d.getFontMetrics().stringWidth(str))) / 2, (getHeight() + fontSize) / 2);
+            
+            Font font = new Font(getFont().getFontName(), Font.PLAIN, fontSize);
+
+            int strX = (getWidth()- t +t1*2 - (g2d.getFontMetrics().stringWidth(str))) / 2;
+            int strY = (getHeight() - 5 + fontSize) / 2;
+            g2d.setFont(font);
             g2d.setColor(Color.DARK_GRAY);
-            g2d.drawString(str, (getWidth()- t +t1*2 - (g2d.getFontMetrics().stringWidth(str))) / 2, (getHeight() + fontSize) / 2 - 1);
+            g2d.drawString(str, ShiftWest(strX, 1), ShiftNorth(strY, 1));
+            g2d.drawString(str, ShiftWest(strX, 1), ShiftSouth(strY, 1));
+            g2d.drawString(str, ShiftEast(strX, 1), ShiftNorth(strY, 1));
+            g2d.drawString(str, ShiftEast(strX, 1), ShiftSouth(strY, 1));
+
+            g2d.setColor(Color.WHITE);
+            g2d.drawString(str, strX, strY);
         }
 }

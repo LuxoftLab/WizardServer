@@ -20,21 +20,24 @@ public class View extends JPanel {
 	private static HashMap<Shape, ImageIcon> shapes = new HashMap<>();
 	private static HashMap<Buff, ImageIcon> buffs = new HashMap<>();
 	private static final int BUFFS_SIZE;
+	private static ImageIcon icon(String path) {
+		return new ImageIcon(View.class.getResource(path));
+	}
 	static {
-		shapes.put(Shape.NONE, new ImageIcon("img/nothing.png"));
-		shapes.put(Shape.CIRCLE, new ImageIcon("img/"+Shape.CIRCLE+".png"));
-		shapes.put(Shape.TRIANGLE, new ImageIcon("img/"+Shape.TRIANGLE+".png"));
-		shapes.put(Shape.CLOCK, new ImageIcon("img/"+Shape.CLOCK+".png"));
-		shapes.put(Shape.PI, new ImageIcon("img/"+Shape.PI+".png"));
-		shapes.put(Shape.SHIELD, new ImageIcon("img/"+Shape.SHIELD+".png"));
-		shapes.put(Shape.V, new ImageIcon("img/"+Shape.V+".png"));
-		shapes.put(Shape.Z, new ImageIcon("img/"+Shape.Z+".png"));
-		shapes.put(Shape.FAIL, new ImageIcon("img/"+Shape.FAIL+".png"));
+		shapes.put(Shape.NONE, icon("img/nothing.png"));
+		shapes.put(Shape.CIRCLE, icon("img/"+Shape.CIRCLE+".png"));
+		shapes.put(Shape.TRIANGLE, icon("img/"+Shape.TRIANGLE+".png"));
+		shapes.put(Shape.CLOCK, icon("img/"+Shape.CLOCK+".png"));
+		shapes.put(Shape.PI, icon("img/"+Shape.PI+".png"));
+		shapes.put(Shape.SHIELD, icon("img/"+Shape.SHIELD+".png"));
+		shapes.put(Shape.V, icon("img/"+Shape.V+".png"));
+		shapes.put(Shape.Z, icon("img/"+Shape.Z+".png"));
+		shapes.put(Shape.FAIL, icon("img/"+Shape.FAIL+".png"));
 		
-		buffs.put(Buff.BLESSING, new ImageIcon("img/buff_blessing.png"));
-		buffs.put(Buff.HOLY_SHIELD, new ImageIcon("img/buff_shield.png"));
-		buffs.put(Buff.CONCENTRATION, new ImageIcon("img/buff_concentration.png"));
-		buffs.put(Buff.WEAKNESS, new ImageIcon("img/buff_weakness.png"));
+		buffs.put(Buff.BLESSING, icon("img/buff_blessing.png"));
+		buffs.put(Buff.HOLY_SHIELD, icon("img/buff_shield.png"));
+		buffs.put(Buff.CONCENTRATION, icon("img/buff_concentration.png"));
+		buffs.put(Buff.WEAKNESS, icon("img/buff_weakness.png"));
 		BUFFS_SIZE = buffs.size();
 	}
 	

@@ -28,11 +28,11 @@ public class SpellPicture extends JLabel {
 		if(timer != null) {
 			timer.stop();
 			startTime = -1;
-//			alpha = 0f;
+			alpha = 0f;
 		}
 		super.setIcon(i);
 		
-		timer = new Timer(4000, new ActionListener() {
+		timer = new Timer(40, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (startTime < 0) {
@@ -46,7 +46,7 @@ public class SpellPicture extends JLabel {
 						((Timer) e.getSource()).stop();
 						alpha = 1f;
 					} else {
-						//alpha = ((float) duration / (float) RUNNING_TIME);
+						alpha = ((float) duration / (float) RUNNING_TIME);
 					}
 					repaint();
 				}

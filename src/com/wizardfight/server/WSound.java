@@ -1,6 +1,6 @@
 package com.wizardfight.server;
 
-import java.io.File;
+import java.net.URL;
 import java.util.EnumMap;
 
 import javax.sound.sampled.AudioInputStream;
@@ -10,31 +10,33 @@ import javax.sound.sampled.Clip;
 import com.wizardfight.Shape;
 
 public class WSound {
-	private static final EnumMap<Shape, String> SHAPE_SOUNDS;
+	private static final EnumMap<Shape, URL> SHAPE_SOUNDS;
 	
+	private static void putSound(Shape shape, String path) {
+		SHAPE_SOUNDS.put(shape, WSound.class.getResource(path));
+	}
 	static {
-		SHAPE_SOUNDS = new EnumMap<Shape, String>(Shape.class);
-		SHAPE_SOUNDS.put(Shape.TRIANGLE, "sounds\\triangle_sound.wav");
-		SHAPE_SOUNDS.put(Shape.CIRCLE, "sounds\\circle_sound.wav");
-		SHAPE_SOUNDS.put(Shape.SHIELD, "sounds\\shield_sound.wav");
-		SHAPE_SOUNDS.put(Shape.Z, "sounds\\z_sound.wav");
-		SHAPE_SOUNDS.put(Shape.V, "sounds\\v_sound.wav");
-		SHAPE_SOUNDS.put(Shape.PI, "sounds\\pi_sound.wav");
-		SHAPE_SOUNDS.put(Shape.CLOCK, "sounds\\clock_sound.wav");
+		SHAPE_SOUNDS = new EnumMap<Shape, URL>(Shape.class);
+		putSound(Shape.TRIANGLE, "sounds/triangle_sound.WAV");
+		putSound(Shape.CIRCLE, "sounds/circle_sound.WAV");
+		putSound(Shape.SHIELD, "sounds/shield_sound.WAV");
+		putSound(Shape.Z, "sounds/z_sound.WAV");
+		putSound(Shape.V, "sounds/v_sound.WAV");
+		putSound(Shape.PI, "sounds/pi_sound.WAV");
+		putSound(Shape.CLOCK, "sounds/clock_sound.WAV");
+		putSound(Shape.FAIL, "sounds/fail_sound.WAV");
 	}
 	
 	public static void playShapeSound(Shape s) {
-		String path = SHAPE_SOUNDS.get(s);
-		if(path == null) return;
+		URL path = SHAPE_SOUNDS.get(s);
 		try {
 			AudioInputStream ais = AudioSystem.
-		            getAudioInputStream(new File(path));
+		            getAudioInputStream(path);
 			Clip clip = AudioSystem.getClip();
 			clip.open(ais);
 	        clip.start();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-
 	}
 }
